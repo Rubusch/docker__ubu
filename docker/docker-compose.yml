@@ -3,7 +3,7 @@ version: '3.8'
 services:
     ubu1804:
         container_name: ubu1804
-        image: ${USER}/ubu1804:ubu1804-DEVEL
+        image: ${USER}/ubu1804:ubu1804-20230501
         build:
             context: build_context
             dockerfile: Dockerfile
