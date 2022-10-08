@@ -7,24 +7,13 @@
 Base container for all kind of projects.  
 
 
-## References
-
-https://www.hackster.io/whitney-knitter/vitis-petalinux-2022-1-krs-1-0-install-on-ubuntu-22-04-145c1b#toc-petalinux-2022-1-installation-3
-
-
 ## Tools Needed
 
 ```
-$ sudo apt-get install -y libffi-dev libssl-dev
-$ sudo apt-get install -y python3-dev
-$ sudo apt-get install -y python3-pyqt5 python3-pyqt5.qtwebengine python3-pypathlib
-$ sudo apt-get install -y python3 python3-pip
+$ sudo apt-get install -y libffi-dev libssl-dev python3-dev python3-pyqt5 python3-pyqt5.qtwebengine python3 python3-pip
 $ pip3 install docker-compose
 ```
-Make sure, ``~/.local`` is within ``$PATH`` or re-link e.g. it to
-``/usr/local``.  
-
-Make sure to have docker setup correctly, e.g.  
+Make sure, ``~/.local`` is within ``$PATH`` or re-link e.g. it to ``/usr/local``, and to have docker group setup correctly, e.g.  
 ```
 $ sudo usermod -aG docker $USER
 ```
@@ -50,7 +39,7 @@ $ docker-compose up
 
 ## Usage
 
-Preparation as above  
+Preparation as above, manual login as follows  
 
 ```
 $ cd docker
@@ -58,4 +47,26 @@ $ docker-compose -f ./docker-compose.yml run --rm ubu1804 /bin/bash
 docker$ build.sh
 ```
 
-NB: Append ``/bin/bash`` to enter the current container for debugging  
+
+## Cleanup
+
+Remove dangling container images, etc.  
+```
+$ docker system prune -f
+```
+
+Remove an docker image  
+```
+$ docker images
+    REPOSITORY               TAG        IMAGE ID       CREATED         SIZE
+    user/ubu1804             20211028   8b0855782faf   11 months ago   2.99GB
+$ docker rmi -f 8b0855782faf
+```
+
+Check via docker-compose (also offers possibility to remove an image)  
+```
+$ docker-compose ps
+```
+
+For more consult the specific help and manpages.  
+
