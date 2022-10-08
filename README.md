@@ -3,6 +3,11 @@
 Base container for all kind of projects.  
 
 
+## References
+
+https://www.hackster.io/whitney-knitter/vitis-petalinux-2022-1-krs-1-0-install-on-ubuntu-22-04-145c1b#toc-petalinux-2022-1-installation-3
+
+
 ## Tools Needed
 
 ```
@@ -34,6 +39,7 @@ $ echo "GID=$(id -g)" >> .env
 Building  
 
 ```
+$ cd ./docker
 $ docker-compose up
 ```
 
@@ -43,7 +49,8 @@ $ docker-compose up
 Preparation as above  
 
 ```
-$ docker-compose -f ./docker-compose.yml run --rm sandbox /bin/bash
+$ cd docker
+$ docker-compose -f ./docker-compose.yml run --rm ubu1804 /bin/bash
 docker$ build.sh
 ```
 
