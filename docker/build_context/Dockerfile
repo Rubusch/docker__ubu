@@ -65,7 +65,7 @@ RUN apt-get install -y \
 	libsdl1.2-dev \
 	pylint \
 	python3 \
-	python \
+	python2 \
 	cpio \
 	tftpd \
 	gnupg \
