@@ -43,7 +43,7 @@ Preparation as above, manual login as follows
 
 ```
 $ cd docker
-$ docker-compose -f ./docker-compose.yml run --rm ubu1804 /bin/bash
+$ docker-compose -f ./docker-compose.yml run --rm ubu2004 /bin/bash
 docker$ build.sh
 ```
 
