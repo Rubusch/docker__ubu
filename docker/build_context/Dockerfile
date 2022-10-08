@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 AS ubu1804
+FROM ubuntu:22.04 AS ubu2204
 MAINTAINER Lothar Rubusch <l.rubusch@gmail.com>
 ENV DEBIAN_FRONTEND=noninteractive
 
