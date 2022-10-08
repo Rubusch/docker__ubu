@@ -13,4 +13,4 @@ jobs:
          cd ./docker
          echo "UID=$(id -u)" > .env
          echo "GID=$(id -g)" >> .env
-         docker-compose up --exit-code-from ubu1804
+         docker-compose up --exit-code-from ubu2204
