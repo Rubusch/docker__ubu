@@ -1,4 +1,8 @@
-# Base
+[![CircleCI](https://circleci.com/gh/Rubusch/docker__ubu.svg?style=shield)](https://circleci.com/gh/Rubusch/docker__ubu)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
+
+
+# Base Ubuntu Container
 
 Base container for all kind of projects.  
 
