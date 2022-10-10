@@ -216,6 +216,8 @@ RUN /etc/init.d/xinetd start tftp
 ## configs
 USER ${USER}
 WORKDIR /home/${USER}
+RUN rm -rf .local
+RUN ln -s /usr/local .local
 
 ## bash config
 RUN rm -f /home/$USER/.bashrc && ln -s ${MY_CONFIGS}/.bashrc /home/$USER/
