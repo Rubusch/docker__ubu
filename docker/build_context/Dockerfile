@@ -131,6 +131,7 @@ RUN apt-get install -y \
 
 ## development
 RUN apt-get install -y \
+	apt-file \
 	psmisc \
 	graphviz \
 	u-boot-tools \
