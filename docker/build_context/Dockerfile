@@ -43,7 +43,9 @@ RUN apt-get install -y \
 	aptitude \
 	bsdmainutils \
 	i2c-tools \
-	device-tree-compiler
+	device-tree-compiler \
+    zstd \
+    lz4
 
 ## xilinx needed packages
 RUN apt-get install -y \
