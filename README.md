@@ -39,8 +39,6 @@ $ docker-compose up
 
 ## Usage
 
-Preparation as above, manual login as follows  
-
 ```
 $ cd docker
 $ docker-compose -f ./docker-compose.yml run --rm ubu1804 /bin/bash
@@ -49,6 +47,12 @@ docker$ build.sh
 
 
 ## Cleanup
+
+Remove orphaned containers  
+```
+$ cd ./docker
+$ docker-compose up -d --remove-orphans
+```
 
 Remove dangling container images, etc.  
 ```
