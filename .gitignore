@@ -5,10 +5,10 @@
 *.rej
 
 ## ignore output folder
-workspace
+workspace*
 
 ## docker multistage build
-sandbox
+#sandbox
 
-## docker environment
+## docker env files
 .env
