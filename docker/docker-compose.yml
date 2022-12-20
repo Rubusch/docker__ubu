@@ -14,7 +14,7 @@ services:
         user: "${UID}:${GID}"
         stdin_open: true          ## docker run -i
         tty: true                 ## docker run -t
-        #privileged: true
+        privileged: true          ## this is a development env!
         environment:
           - USER
         env_file:
