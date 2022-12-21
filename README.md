@@ -21,14 +21,6 @@ $ sudo usermod -aG docker $USER
 
 ## Build
 
-Preparation  
-
-```
-$ cd ./docker
-$ echo "UID=$(id -u)" > .env
-$ echo "GID=$(id -g)" >> .env
-```
-
 Building  
 
 ```
