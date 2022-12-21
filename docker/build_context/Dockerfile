@@ -128,7 +128,8 @@ RUN apt-get install -y \
 	dpkg-dev:i386 \
 	ocl-icd-libopencl1 \
 	opencl-headers \
-	ocl-icd-opencl-dev
+	ocl-icd-opencl-dev \
+	cmake
 
 ## development
 RUN apt-get install -y \
