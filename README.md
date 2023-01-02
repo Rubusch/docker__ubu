@@ -55,7 +55,7 @@ Remove an docker image
 ```
 $ docker images
     REPOSITORY               TAG        IMAGE ID       CREATED         SIZE
-    user/ubu1804             20211028   8b0855782faf   11 months ago   2.99GB
+    user/ubu2004             20211028   8b0855782faf   11 months ago   2.99GB
 $ docker rmi -f 8b0855782faf
 ```
 
