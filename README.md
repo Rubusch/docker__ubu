@@ -25,7 +25,7 @@ Building
 
 ```
 $ cd ./docker
-$ docker-compose up
+$ docker-compose up -d --remove-orphans
 ```
 
 
