@@ -113,3 +113,6 @@ fi
 if [[ -z "$(echo ${PATH} | grep '/usr/sbin')" ]]; then
     export PATH=${PATH}:/usr/sbin
 fi
+
+## GUI IDEs will need the following when based on Qt
+export QT_X11_NO_MITSHM=1

@@ -10,6 +10,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 ################################################################################
 ## the USER is needed to make it available as --build-arg
 ARG USER="${USER}"
+ARG UID="${UID}"
+ARG GID="${GID}"
 ENV MY_CONFIGS="/home/$USER/configs"
 
 
@@ -17,7 +19,10 @@ ENV MY_CONFIGS="/home/$USER/configs"
 ## set up apt fully functional
 USER root
 RUN dpkg --add-architecture i386
-RUN apt-get update && apt-get upgrade -y && apt-get autoremove -y --purge
+
+## NB: don't do "apt-get upgrade -y", for avoiding trouble
+## incompatible through packaging solutions
+RUN apt-get update && apt-get autoremove -y --purge
 
 ## container essentials
 RUN apt-get install -y \
@@ -26,6 +31,7 @@ RUN apt-get install -y \
 	bc \
 	libelf-dev \
 	python3-all \
+	python3-dialog \
 	rsync \
 	binutils \
 	bzip2 \
@@ -37,42 +43,62 @@ RUN apt-get install -y \
 	curl \
 	bin86 \
 	patch \
-	python3-dialog \
 	mercurial \
 	libc6-i386 \
 	aptitude \
 	bsdmainutils \
 	i2c-tools \
+	expect \
 	device-tree-compiler
 
 ## xilinx needed packages
 RUN apt-get install -y \
-	iproute2 \
+	build-essential \
+	flex \
+	bison \
+	autoconf \
+	libtool \
+	gcc \
+	gcc-multilib \
+	g++ \
+	automake \
 	make \
-	libncurses5-dev \
-	tftpd \
-	libselinux1 \
 	wget \
-	diffstat \
-	chrpath \
+	net-tools \
+	iproute2 \
 	socat \
+	tftpd \
+	iputils-ping \
+	openssl \
+	libssl-dev \
+	openssh-server \
+	libselinux1 \
 	tar \
 	unzip \
 	gzip \
+	xz-utils \
+	cpio \
 	tofrodos \
 	debianutils \
-	iputils-ping \
+	gawk \
+	diffstat \
+	chrpath \
+	util-linux \
+	sysvinit-utils \
+	google-perftools \
 	libegl1-mesa \
 	libsdl1.2-dev \
+	python \
 	pylint \
 	python3 \
-	python \
-	cpio \
-	tftpd \
-	gnupg \
-	zlib1g:i386 \
-	haveged \
+	python3-pip \
+	python3-git \
+	python3-jinja2 \
+	python3-pexpect \
 	perl \
+	liberror-perl \
+	gnupg \
+	haveged \
 	lib32stdc++6 \
 	libgtk2.0-0:i386 \
 	libfontconfig1:i386 \
@@ -81,32 +107,13 @@ RUN apt-get install -y \
 	libxrender1:i386 \
 	libsm6:i386 \
 	xinetd \
-	gawk \
-	gcc \
-	net-tools \
-	ncurses-dev \
-	openssl \
-	libssl-dev \
-	flex \
-	bison \
 	xterm \
-	autoconf \
-	libtool \
 	texinfo \
 	zlib1g-dev \
-	gcc-multilib \
-	build-essential \
-	automake \
+	zlib1g:i386 \
 	screen \
 	putty \
 	pax \
-	g++ \
-	python3-pip \
-	xz-utils \
-	python3-git \
-	python3-jinja2 \
-	python3-pexpect \
-	liberror-perl \
 	mtd-utils \
 	xtrans-dev \
 	libxcb-randr0-dev \
@@ -114,51 +121,48 @@ RUN apt-get install -y \
 	libxcb-xinerama0-dev \
 	libxcb-shape0-dev \
 	libxcb-xkb-dev \
-	openssh-server \
-	util-linux \
-	sysvinit-utils \
-	google-perftools \
+	ncurses-dev \
 	libncurses5 \
 	libncurses5-dev \
 	libncursesw5-dev \
 	libncurses5:i386 \
 	libtinfo5 \
 	libstdc++6:i386 \
-	libgtk2.0-0:i386 \
 	dpkg-dev:i386 \
 	ocl-icd-libopencl1 \
 	opencl-headers \
-	ocl-icd-opencl-dev \
-	cmake
+	ocl-icd-opencl-dev
+
+## GUI IDEs may require the following...
+RUN apt-get install -y \
+	'^libxcb.*-dev' \
+	libx11-xcb-dev \
+	libglu1-mesa-dev \
+	libxrender-dev \
+	libxi-dev \
+	libxkbcommon-dev \
+	libxkbcommon-x11-dev
 
 ## development
 RUN apt-get install -y \
+	cmake \
 	apt-file \
 	psmisc \
-	graphviz \
 	u-boot-tools \
 	tree \
 	mc \
 	colordiff \
 	tig \
 	dos2unix \
-	emacs \
-	vim \
-	chrpath \
-	diffstat \
-	gawk \
-	texinfo \
-	libsdl1.2-dev \
-	xterm \
-	screen \
 	x11-apps \
+	vim \
+	emacs \
 	emacs-goodies-el \
 	emacs-goodies-extra-el \
 	exuberant-ctags \
-	doxygen
-
-## special - git
-RUN apt-get install -y git-all
+	graphviz \
+	doxygen \
+        git-all
 
 
 ################################################################################
@@ -180,8 +184,9 @@ ENV LC_ALL en_US.UTF-8
 ################################################################################
 ## user settings
 USER root
-RUN useradd -m -s /bin/bash "$USER"
-RUN usermod -a -G "sudo" "$USER"
+RUN groupadd -g "$GID" "$USER"
+RUN useradd -m -u "$UID" -g "$GID" -s /bin/bash "$USER"
+RUN usermod -a -G sudo "$USER"
 RUN sed -i '/%sudo/s/.*/%sudo   ALL=NOPASSWD: ALL/' /etc/sudoers
 RUN mkdir -p /usr/local
 RUN chown -R "${USER}":"${USER}" /usr/local

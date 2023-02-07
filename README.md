@@ -21,6 +21,13 @@ $ sudo usermod -aG docker $USER
 
 ## Build
 
+Preparation  
+
+```
+$ echo "UID=$(id -u)" > ./docker/.env
+$ echo "GID=$(id -g)" >> ./docker/.env
+```
+
 Building  
 
 ```
@@ -65,4 +72,3 @@ $ docker-compose ps
 ```
 
 For more consult the specific help and manpages.  
-
