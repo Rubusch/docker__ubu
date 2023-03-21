@@ -52,6 +52,7 @@ RUN apt-get install -y \
 	device-tree-compiler
 
 ## xilinx needed packages
+## TODO better split: move xilinx needed to Petalinux & Xilinx Dockerfiles
 RUN apt-get install -y \
 	build-essential \
 	flex \
