@@ -43,17 +43,9 @@ RUN apt-get install -y \
 	curl \
 	bin86 \
 	patch \
-	mercurial \
-	libc6-i386 \
 	aptitude \
-	bsdmainutils \
-	i2c-tools \
 	expect \
-	device-tree-compiler
-
-## xilinx needed packages
-## TODO better split: move xilinx needed to Petalinux & Xilinx Dockerfiles
-RUN apt-get install -y \
+	device-tree-compiler \
 	build-essential \
 	flex \
 	bison \
@@ -86,6 +78,14 @@ RUN apt-get install -y \
 	chrpath \
 	util-linux \
 	sysvinit-utils \
+	gnupg
+
+## xilinx needed packages
+## TODO better split: move xilinx needed to Petalinux & Xilinx Dockerfiles
+RUN apt-get install -y \
+	mercurial \
+	libc6-i386 \
+	bsdmainutils \
 	google-perftools \
 	libegl1-mesa \
 	libsdl1.2-dev \
@@ -98,7 +98,6 @@ RUN apt-get install -y \
 	python3-pexpect \
 	perl \
 	liberror-perl \
-	gnupg \
 	haveged \
 	lib32stdc++6 \
 	libgtk2.0-0:i386 \
@@ -112,7 +111,6 @@ RUN apt-get install -y \
 	texinfo \
 	zlib1g-dev \
 	zlib1g:i386 \
-	screen \
 	putty \
 	pax \
 	mtd-utils \
@@ -146,6 +144,8 @@ RUN apt-get install -y \
 
 ## development
 RUN apt-get install -y \
+	screen \
+	i2c-tools \
 	cmake \
 	apt-file \
 	psmisc \
@@ -163,7 +163,7 @@ RUN apt-get install -y \
 	exuberant-ctags \
 	graphviz \
 	doxygen \
-        git-all
+	git-all
 
 
 ################################################################################
@@ -187,12 +187,16 @@ ENV LC_ALL en_US.UTF-8
 USER root
 RUN groupadd -g "$GID" "$USER"
 RUN useradd -m -u "$UID" -g "$GID" -s /bin/bash "$USER"
-RUN usermod -a -G sudo "$USER"
-RUN sed -i '/%sudo/s/.*/%sudo   ALL=NOPASSWD: ALL/' /etc/sudoers
+
+RUN echo "$USER  ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
 RUN mkdir -p /usr/local
 RUN chown -R "${USER}":"${USER}" /usr/local
+
 RUN mkdir -p /opt
 RUN chown -R "${USER}":"${USER}" /opt
+
+RUN adduser "$USER" sudo
 RUN adduser "$USER" dialout
 
 
