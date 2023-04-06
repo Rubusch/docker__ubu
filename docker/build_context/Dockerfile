@@ -6,14 +6,12 @@ FROM ubuntu:18.04 AS ubu1804
 MAINTAINER Lothar Rubusch <l.rubusch@gmail.com>
 ENV DEBIAN_FRONTEND=noninteractive
 
-
 ################################################################################
 ## the USER is needed to make it available as --build-arg
 ARG USER="${USER}"
 ARG UID="${UID}"
 ARG GID="${GID}"
 ENV MY_CONFIGS="/home/$USER/configs"
-
 
 ################################################################################
 ## set up apt fully functional
@@ -80,68 +78,6 @@ RUN apt-get install -y \
 	sysvinit-utils \
 	gnupg
 
-## xilinx needed packages
-## TODO better split: move xilinx needed to Petalinux & Xilinx Dockerfiles
-RUN apt-get install -y \
-	mercurial \
-	libc6-i386 \
-	bsdmainutils \
-	google-perftools \
-	libegl1-mesa \
-	libsdl1.2-dev \
-	python \
-	pylint \
-	python3 \
-	python3-pip \
-	python3-git \
-	python3-jinja2 \
-	python3-pexpect \
-	perl \
-	liberror-perl \
-	haveged \
-	lib32stdc++6 \
-	libgtk2.0-0:i386 \
-	libfontconfig1:i386 \
-	libx11-6:i386 \
-	libxext6:i386 \
-	libxrender1:i386 \
-	libsm6:i386 \
-	xinetd \
-	xterm \
-	texinfo \
-	zlib1g-dev \
-	zlib1g:i386 \
-	putty \
-	pax \
-	mtd-utils \
-	xtrans-dev \
-	libxcb-randr0-dev \
-	libxcb-xtest0-dev \
-	libxcb-xinerama0-dev \
-	libxcb-shape0-dev \
-	libxcb-xkb-dev \
-	ncurses-dev \
-	libncurses5 \
-	libncurses5-dev \
-	libncursesw5-dev \
-	libncurses5:i386 \
-	libtinfo5 \
-	libstdc++6:i386 \
-	dpkg-dev:i386 \
-	ocl-icd-libopencl1 \
-	opencl-headers \
-	ocl-icd-opencl-dev
-
-## GUI IDEs may require the following...
-RUN apt-get install -y \
-	'^libxcb.*-dev' \
-	libx11-xcb-dev \
-	libglu1-mesa-dev \
-	libxrender-dev \
-	libxi-dev \
-	libxkbcommon-dev \
-	libxkbcommon-x11-dev
-
 ## development
 RUN apt-get install -y \
 	screen \
@@ -165,7 +101,6 @@ RUN apt-get install -y \
 	doxygen \
 	git-all
 
-
 ################################################################################
 ## system settings
 
@@ -180,7 +115,6 @@ RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
-
 
 ################################################################################
 ## user settings
@@ -198,7 +132,6 @@ RUN chown -R "${USER}":"${USER}" /opt
 
 RUN adduser "$USER" sudo
 RUN adduser "$USER" dialout
-
 
 ################################################################################
 ## tftp server
@@ -223,7 +156,6 @@ RUN chown -R nobody /tftpboot
 RUN /etc/init.d/xinetd stop tftp
 RUN /etc/init.d/xinetd start tftp
 
-
 ################################################################################
 ## configs
 USER ${USER}
@@ -245,7 +177,6 @@ RUN echo "export USER=${USER}" >> /home/$USER/.profile
 
 ## ssh preparations
 RUN mkdir -p /home/$USER/.ssh
-
 
 ################################################################################
 ## command mode
