@@ -133,6 +133,9 @@ set report=0
 "  set runtimepath+=~/.vim,~/.vim/after,/usr/share/vim/vim60
 "endif
 
+" open browser in current dir ( %:p:h/... )
+set autochdir
+
 " shiftwidth: number of spaces to use for each insertion of (auto)indent
 "set shiftwidth=8
 "set shiftwidth=2
