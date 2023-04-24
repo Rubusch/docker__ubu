@@ -32,7 +32,7 @@ Building
 
 ```
 $ cd ./docker
-$ docker-compose up
+$ docker-compose up --no-cache
 ```
 
 
