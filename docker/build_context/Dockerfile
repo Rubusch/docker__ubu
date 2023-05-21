@@ -99,7 +99,8 @@ RUN apt-get install -y \
 	exuberant-ctags \
 	graphviz \
 	doxygen \
-	git-all
+	git-all \
+	file
 
 ################################################################################
 ## system settings
