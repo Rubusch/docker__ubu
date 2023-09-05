@@ -105,13 +105,18 @@ fi
 #alias emacs='~/.emacsstarter.sh'
 
 ## append /sbin for ifconfig
-if [[ -z "$(echo ${PATH} | grep '/sbin')" ]]; then
-    export PATH=${PATH}:/sbin
+if [[ -z "$(echo $PATH | grep '/sbin')" ]]; then
+    export PATH=$PATH:/sbin
 fi
 
 ## append /usr/sbin for arp
-if [[ -z "$(echo ${PATH} | grep '/usr/sbin')" ]]; then
-    export PATH=${PATH}:/usr/sbin
+if [[ -z "$(echo $PATH | grep '/usr/sbin')" ]]; then
+    export PATH=$PATH:/usr/sbin
+fi
+
+## append /usr/local/bin for tools
+if [[ -z "$(echo $PATH | grep '/usr/local/bin')" ]]; then
+    export PATH=$PATH:/usr/local/bin
 fi
 
 ## GUI IDEs will need the following when based on Qt
