@@ -11,6 +11,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ARG USER="${USER}"
 ARG UID="${UID}"
 ARG GID="${GID}"
+ARG DISPLAY="${DISPLAY}"
 ENV MY_CONFIGS="/home/$USER/configs"
 
 ################################################################################
@@ -76,7 +77,8 @@ RUN apt-get install -y \
 	chrpath \
 	util-linux \
 	sysvinit-utils \
-	gnupg
+	gnupg \
+	libncurses-dev
 
 ## development
 RUN apt-get install -y \
@@ -100,15 +102,28 @@ RUN apt-get install -y \
 	graphviz \
 	doxygen \
 	git-all \
+	meld \
 	file
+
+RUN apt-get install -y \
+	libffi-dev \
+	libssl-dev \
+	python3-dev \
+	python3-pyqt5 \
+	python3-pyqt5.qtwebengine \
+	python3 \
+	python3-pip \
+	kas \
+	zstd \
+	lz4
 
 ################################################################################
 ## system settings
 
-## set shell to bash instead of dash non-interactively
+## xilinx - set shell to bash instead of dash non-interactively
 ## ref: https://superuser.com/questions/715722/how-to-do-dpkg-reconfigure-dash-as-bash-automatically
-RUN echo "dash dash/sh boolean false" | debconf-set-selections
-RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+#RUN echo "dash dash/sh boolean false" | debconf-set-selections
+#RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
 
 ## locale settings
 USER root
@@ -126,42 +141,44 @@ RUN useradd -m -u "$UID" -g "$GID" -s /bin/bash "$USER"
 RUN echo "$USER  ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 RUN mkdir -p /usr/local
-RUN chown -R "${USER}":"${USER}" /usr/local
+RUN chown -R "$USER":"$USER" /usr/local
 
 RUN mkdir -p /opt
-RUN chown -R "${USER}":"${USER}" /opt
+RUN chown -R "$USER":"$USER" /opt
+
+RUN chown -R "$USER":"$USER" /home/$USER
 
 RUN adduser "$USER" sudo
 RUN adduser "$USER" dialout
 
-################################################################################
-## tftp server
-USER root
-RUN echo -e '\
-service tftp\n\
-    {\n\
-    protocol = udp\n\
-    port = 69\n\
-    socket_type = dgram\n\
-    wait = yes\n\
-    user = nobody\n\
-    server = /usr/sbin/in.tftpd\n\
-    server_args = /tftpboot\n\
-    disable = no\n\
-    }\n\
-' > /etc/xinetd.d/tftp
-
-RUN mkdir /tftpboot
-RUN chmod -R 777 /tftpboot
-RUN chown -R nobody /tftpboot
-RUN /etc/init.d/xinetd stop tftp
-RUN /etc/init.d/xinetd start tftp
+##################################################################################
+#### tftp server
+##USER root
+##RUN echo -e '\
+##service tftp\n\
+##    {\n\
+##    protocol = udp\n\
+##    port = 69\n\
+##    socket_type = dgram\n\
+##    wait = yes\n\
+##    user = nobody\n\
+##    server = /usr/sbin/in.tftpd\n\
+##    server_args = /tftpboot\n\
+##    disable = no\n\
+##    }\n\
+##' > /etc/xinetd.d/tftp
+##
+##RUN mkdir /tftpboot
+##RUN chmod -R 777 /tftpboot
+##RUN chown -R nobody /tftpboot
+##RUN /etc/init.d/xinetd stop tftp
+##RUN /etc/init.d/xinetd start tftp
 
 ################################################################################
 ## configs
-USER ${USER}
-WORKDIR /home/${USER}
-RUN rm -rf .local
+USER $USER
+WORKDIR /home/$USER
+
 RUN ln -s /usr/local .local
 
 ## bash config
@@ -184,4 +201,4 @@ RUN mkdir -p /home/$USER/.ssh
 USER ${USER}
 WORKDIR /home/$USER
 COPY *.sh /usr/local/bin/
-CMD ["/bin/cat", "/etc/issue"]
+CMD ["/bin/bash", "/usr/local/bin/build.sh"]

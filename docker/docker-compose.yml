@@ -17,18 +17,20 @@ services:
         privileged: true          ## this is a development env!
         environment:
           - USER
+          - DISPLAY=$DISPLAY
         env_file:
           - .env
+        group_add:
+          - 20                    ## group: dialout
         volumes:
-          ## folder can be around
-          - ~/.gitconfig:/home/$USER/.gitconfig:ro
-          #- ~/.ssh:/home/${USER}/.ssh
-          ## actually bind mount .ssh to update known_hosts
+          ## folders not need to be around
+          - /tmp/.X11-unix:/tmp/.X11-unix
+          - ~/.Xauthority:/home/${USER}/.Xauthority:ro
+          - ~/.gitconfig:/home/${USER}/.gitconfig:ro
+          - ~/.ssh:/home/${USER}/.ssh
           - ./workspace:/home/${USER}/workspace
           ## folder must be around
           - type: bind
-            source: ~/.ssh
-            target: /home/${USER}/.ssh
-          - type: bind
             source: ./build_configs
             target: /home/$USER/configs
+        network_mode: "host"
